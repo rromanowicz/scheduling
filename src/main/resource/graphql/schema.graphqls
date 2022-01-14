@@ -37,6 +37,7 @@ type Hour {
     id: ID!
     sessionTime: Time
     users: [User]
+    count: Int
 }
 
 input CalendarInput {

@@ -39,11 +39,14 @@ public class HourEntity {
     @Cascade(ALL)
     private List<UserEntity> users;
 
+    private Integer count;
+
     public void addUser(UserEntity user) {
         if (users == null) {
             users = new ArrayList<>();
         }
         users.add(user);
+        count++;
     }
 
     public void removeUser(UserEntity user) {
@@ -51,5 +54,6 @@ public class HourEntity {
             users = new ArrayList<>();
         }
         users.remove(user);
+        count--;
     }
 }

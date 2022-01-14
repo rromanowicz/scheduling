@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Slf4j
@@ -33,25 +34,29 @@ public class SchedulingService implements GraphQLQueryResolver, GraphQLMutationR
     public String addSession(Integer userId, CalendarMutation calendar) {
         Optional<UserEntity> user = userService.getUserById(userId);
         Optional<CalendarEntity> calendarEntity = calendarRepository.findBySessionDate(calendar.getSessionDate());
+        AtomicBoolean isSuccess = new AtomicBoolean(false);
         if (calendarEntity.isPresent() && user.isPresent()) {
-            calendarEntity.get().getHours().stream().forEach(it ->
+            calendarEntity.get().getHours().forEach(it ->
             {
                 if (it.getSessionTime().equals(calendar.getSessionTime())) {
                     it.addUser(user.get());
                     calendarRepository.save(calendarEntity.get());
+                    isSuccess.set(true);
                 }
             });
-            return String.format("Session saved {username:'%s', session: {date: '%s', time: '%s'}}",
-                    user.get().getUsername(), calendar.getSessionDate(), calendar.getSessionDate());
+            if (isSuccess.get()) {
+                return String.format("Session saved {username:'%s', session: {date: '%s', time: '%s'}}",
+                        user.get().getUsername(), calendar.getSessionDate(), calendar.getSessionDate());
+            }
         }
-        return null;
+        return "Nope.";
     }
 
     public String cancelSession(Integer userId, CalendarMutation calendar) {
         Optional<UserEntity> user = userService.getUserById(userId);
         Optional<CalendarEntity> calendarEntity = calendarRepository.findBySessionDate(calendar.getSessionDate());
         if (calendarEntity.isPresent() && user.isPresent()) {
-            calendarEntity.get().getHours().stream().forEach(it ->
+            calendarEntity.get().getHours().forEach(it ->
             {
                 if (it.getSessionTime().equals(calendar.getSessionTime())) {
                     it.removeUser(user.get());

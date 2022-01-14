@@ -54,5 +54,4 @@ public class CalendarEntity {
         hours.remove(hour);
     }
 
-
 }

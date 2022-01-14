@@ -1,0 +1,31 @@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+spring:
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:h2:mem:schedulingDb
+    #    url: jdbc:h2:file:/data/schedulingDb
+    username: sa
+    password: #password
+    driverClassName: org.h2.Driver
+
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+graphql:
+  servlet:
+    corsEnabled: true
+    mapping: /graphql
+    enabled: true

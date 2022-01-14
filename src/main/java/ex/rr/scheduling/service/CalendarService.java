@@ -21,6 +21,6 @@ public class CalendarService implements GraphQLQueryResolver, GraphQLMutationRes
     }
 
     public List<CalendarEntity> getCalendarByUserId(Integer userId) {
-        return calendarRepository.findByUsersId(userId);
+        return calendarRepository.findByHoursUsersId(userId);
     }
 }

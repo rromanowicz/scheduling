@@ -32,10 +32,15 @@ public class SchedulingService implements GraphQLQueryResolver, GraphQLMutationR
 
     public String addSession(Integer userId, CalendarMutation calendar) {
         Optional<UserEntity> user = userService.getUserById(userId);
-        Optional<CalendarEntity> calendarEntity = calendarRepository.findBySessionDateAndSessionTime(calendar.getSessionDate(), calendar.getSessionTime());
+        Optional<CalendarEntity> calendarEntity = calendarRepository.findBySessionDate(calendar.getSessionDate());
         if (calendarEntity.isPresent() && user.isPresent()) {
-            calendarEntity.get().addUser(user.get());
-            calendarRepository.save(calendarEntity.get());
+            calendarEntity.get().getHours().stream().forEach(it ->
+            {
+                if (it.getSessionTime().equals(calendar.getSessionTime())) {
+                    it.addUser(user.get());
+                    calendarRepository.save(calendarEntity.get());
+                }
+            });
             return String.format("Session saved {username:'%s', session: {date: '%s', time: '%s'}}",
                     user.get().getUsername(), calendar.getSessionDate(), calendar.getSessionDate());
         }
@@ -44,10 +49,15 @@ public class SchedulingService implements GraphQLQueryResolver, GraphQLMutationR
 
     public String cancelSession(Integer userId, CalendarMutation calendar) {
         Optional<UserEntity> user = userService.getUserById(userId);
-        Optional<CalendarEntity> calendarEntity = calendarRepository.findBySessionDateAndSessionTime(calendar.getSessionDate(), calendar.getSessionTime());
+        Optional<CalendarEntity> calendarEntity = calendarRepository.findBySessionDate(calendar.getSessionDate());
         if (calendarEntity.isPresent() && user.isPresent()) {
-            calendarEntity.get().removeUser(user.get());
-            calendarRepository.save(calendarEntity.get());
+            calendarEntity.get().getHours().stream().forEach(it ->
+            {
+                if (it.getSessionTime().equals(calendar.getSessionTime())) {
+                    it.removeUser(user.get());
+                    calendarRepository.save(calendarEntity.get());
+                }
+            });
             return "DONE!";
         }
         return "I CAN'T DO THAT!";

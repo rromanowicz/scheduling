@@ -30,6 +30,11 @@ type User {
 type Calendar {
     id: ID!
     sessionDate: Date
+    hours: [Hour]
+}
+
+type Hour {
+    id: ID!
     sessionTime: Time
     users: [User]
 }

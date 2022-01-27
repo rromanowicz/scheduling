@@ -40,10 +40,10 @@ public class SchedulingService implements GraphQLQueryResolver, GraphQLMutationR
             {
                 if (it.getSessionTime().equals(calendar.getSessionTime())) {
                     it.addUser(user.get());
-                    calendarRepository.save(calendarEntity.get());
-                    isSuccess.set(true);
                 }
             });
+            calendarRepository.save(calendarEntity.get());
+            isSuccess.set(true);
             if (isSuccess.get()) {
                 return String.format("Session saved {username:'%s', session: {date: '%s', time: '%s'}}",
                         user.get().getUsername(), calendar.getSessionDate(), calendar.getSessionDate());
@@ -60,9 +60,9 @@ public class SchedulingService implements GraphQLQueryResolver, GraphQLMutationR
             {
                 if (it.getSessionTime().equals(calendar.getSessionTime())) {
                     it.removeUser(user.get());
-                    calendarRepository.save(calendarEntity.get());
                 }
             });
+            calendarRepository.save(calendarEntity.get());
             return "DONE!";
         }
         return "I CAN'T DO THAT!";

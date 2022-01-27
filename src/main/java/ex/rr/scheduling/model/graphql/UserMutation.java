@@ -1,15 +1,9 @@
 package ex.rr.scheduling.model.graphql;
 
-import graphql.schema.GraphQLInputType;
 import lombok.Data;
 
 @Data
-public class UserMutation implements GraphQLInputType {
-
-    @Override
-    public String getName() {
-        return "userMutation";
-    }
+public class UserMutation {
 
     private String username;
 

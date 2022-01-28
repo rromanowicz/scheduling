@@ -1,0 +1,146 @@
+
+
+mutation {
+
+  # updateUserEmail(userId:1 email:"test@test") {
+  #   username
+  #   password
+  #   email
+  #   role
+  # }
+
+  # addUser(
+  #   userInput:{
+  #     username:"test"
+  #     password:"test",
+  #     email:"test@test"
+  #   }
+  # ){
+  #   id
+  #   username
+  #   email
+  #   role
+  # }
+
+  addSession(
+    userId: 1
+    calendarInput: {
+      sessionDate:"2022-01-03",
+      sessionTime:"17:30"
+    }
+  )
+
+#   # cancelSession(userId: 1 input: {sessionDate:"2022-01-12", sessionTime:"17:30"})
+}
+
+
+# {
+
+  # getUserById(id: 1) { id username email role }
+  # getAllUsers{ id username email role }
+  # getAllSessions{id user{username role} calendar{sessionDate sessionTime}}
+
+  # getUserSessions(userId:1){
+  #   user{
+  #     id
+  #     username
+  #   }
+  #   sessions{
+  #     id
+  #     sessionDate
+  #     sessionTime
+  #   }
+  # }
+
+  # getUserById(userId: 1) {
+  #   id
+  #   username
+  #   email
+  #   role
+  # }
+
+  # getAllUsers{
+  #   id
+  #   username
+  #   email
+  #   role
+  # }
+
+  # getCalendar(id:1) {
+  #         id
+  #         sessionDate
+  #         hours{
+  #           id
+  #           sessionTime
+  #           count
+  #           users{
+  #             id
+  #             username
+  #           }
+  #         }
+  #     }
+
+  # getCalendarByUserId(userId: 1){
+  #   id
+  #   sessionDate
+  #   hours{
+  #     id
+  #     sessionTime
+  #     count
+  #     users{
+  #       id
+  #       username
+  #     }
+  #   }
+  # }
+
+  # getHostById(hostId:4) {
+  #   host{id username}
+  #   location{
+  #     locationDetails{
+  #       description
+  #       city address
+  #     }
+  #     calendar{
+  #       id
+  #       calendarEntries{
+  #         id
+  #         sessionDate
+  #         hours{
+  #           id
+  #           sessionTime
+  #           count
+  #           users{
+  #             id
+  #             username
+  #           }
+  #         }
+  #       }
+  #     }
+  #     settings{
+  #       id
+  #       settingsEntries{
+  #         id
+  #         type
+  #         subType
+  #         val
+  #       }
+  #     }
+  #   }
+  # }
+
+# }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

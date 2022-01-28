@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserSessions {
+public class Session {
 
-    private UserEntity user;
-    private List<Session> sessions;
+    private Integer id;
+    private LocalDate sessionDate;
+    private LocalTime sessionTime;
 
 }

@@ -6,11 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class SettingsEntity {
 
@@ -19,10 +20,6 @@ public class SettingsEntity {
     @SequenceGenerator(name = "settingsIdSeq")
     private Integer id;
 
-    private String type;
-
-    private String subType;
-
-    private String val;
-
+    @OneToMany(targetEntity = SettingsEntryEntity.class, cascade = CascadeType.ALL)
+    List<SettingsEntryEntity> settingsEntries;
 }

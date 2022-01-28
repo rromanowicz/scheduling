@@ -35,7 +35,7 @@ public class HourEntity {
     @JsonSerialize(using = LocalTimeSerializer.class)
     private LocalTime sessionTime;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
     @Cascade(ALL)
     private List<UserEntity> users;
 
@@ -45,8 +45,10 @@ public class HourEntity {
         if (users == null) {
             users = new ArrayList<>();
         }
-        users.add(user);
-        count++;
+        if(!users.contains(user)) {
+            users.add(user);
+            count++;
+        }
     }
 
     public void removeUser(UserEntity user) {

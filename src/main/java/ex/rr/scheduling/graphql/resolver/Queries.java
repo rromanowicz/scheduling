@@ -1,9 +1,10 @@
 package ex.rr.scheduling.graphql.resolver;
 
 import ex.rr.scheduling.EntityMapper;
-import ex.rr.scheduling.model.CalendarEntity;
-import ex.rr.scheduling.model.UserEntity;
+import ex.rr.scheduling.model.*;
+import ex.rr.scheduling.repository.CalendarEntryRepository;
 import ex.rr.scheduling.repository.CalendarRepository;
+import ex.rr.scheduling.repository.HostRepository;
 import ex.rr.scheduling.repository.UserRepository;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -25,7 +26,14 @@ public class Queries {
     private UserRepository userRepository;
 
     @Autowired
+    private CalendarEntryRepository calendarEntryRepository;
+
+    @Autowired
     private CalendarRepository calendarRepository;
+
+    @Autowired
+    private HostRepository hostRepository;
+
 
     @GraphQLQuery(name = "getUserById")
     public Optional<UserEntity> getUserById(@GraphQLArgument(name = "userId") Integer userId) {
@@ -37,14 +45,20 @@ public class Queries {
         return userRepository.findAll();
     }
 
-    @GraphQLQuery(name = "getCalendar")
-    public List<CalendarEntity> getCalendar() {
-        return calendarRepository.findAll();
+    @GraphQLQuery(name = "getUserSessions")
+    public UserSessions getUserSessions(@GraphQLArgument(name = "userId") Integer userId) {
+        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        return userEntity.map(entity -> entityMapper.mapUserSessions(entity, calendarEntryRepository.findByHoursUsersId(userId))).orElse(null);
     }
 
-    @GraphQLQuery(name = "getCalendarByUserId")
-    public List<CalendarEntity> getCalendarByUserId(@GraphQLArgument(name = "userId") Integer userId) {
-        return calendarRepository.findByHoursUsersId(userId);
+    @GraphQLQuery(name = "getCalendar")
+    public CalendarEntity getCalendar(@GraphQLArgument(name = "id") Integer id) {
+        return calendarRepository.findById(id).orElse(null);
+    }
+
+    @GraphQLQuery(name = "getHostById")
+    public HostEntity getHostById(@GraphQLArgument(name = "hostId") Integer hostId) {
+        return hostRepository.findByHostId(hostId).orElse(null);
     }
 
 }

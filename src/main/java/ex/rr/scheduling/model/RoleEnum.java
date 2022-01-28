@@ -3,6 +3,7 @@ package ex.rr.scheduling.model;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum RoleEnum {
+    HOST("Host"),
     ADMIN("Admin"),
     USER("User");
 

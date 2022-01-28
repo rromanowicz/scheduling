@@ -15,11 +15,11 @@ public class SchedulingApplication {
 
 
 	@Autowired
-	private Test test;
+	private SampleData sampleData;
 
 	@PostConstruct
 	public void populateTestData() {
-		test.createSampleData();
+		sampleData.createSampleData();
 	}
 
 }

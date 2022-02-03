@@ -18,12 +18,11 @@ public class GraphqlConfig {
 
     @Bean
     public GraphQL configureGraphqlSchema() {
-//    UserService userService = new UserService(); //instantiate the service (or inject by Spring or another framework)
         GraphQLSchema schema = new GraphQLSchemaGenerator()
-                .withBasePackages("ex.rr.scheduling") //not mandatory but strongly recommended to set your "root" packages
-                .withOperationsFromSingleton(mutations) //register the service
+                .withBasePackages("ex.rr.scheduling")
+                .withOperationsFromSingleton(mutations)
                 .withOperationsFromSingleton(queries)
-                .generate(); //done
+                .generate();
         return new GraphQL.Builder(schema)
                 .build();
     }

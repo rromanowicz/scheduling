@@ -8,21 +8,22 @@ schema {
 
 type Query{
     getAllUsers : [User]
-    getUserById(id : Int) : User
+    getUserById(userId : Int) : User
     getCalendar: [Calendar]
     getCalendarByUserId(userId: Int): [Calendar]
 }
 
 type Mutation{
-    updateUserEmail(id:Int, val:String) : User
-    addUser(input: UserMutation) : User
-    addSession(userId: Int, input : CalendarInput) : String
-    cancelSession(userId: Int, input : CalendarInput) : String
+    updateUserEmail(userId:Int, email:String) : User
+    addUser(userInput: UserMutation) : User
+    addSession(userId: Int, calendarInput : CalendarInput) : String
+    cancelSession(userId: Int, calendarInput : CalendarInput) : String
 }
 
 type User {
     id : ID!
     username : String,
+    password : String,
     email : String,
     role : String
 }

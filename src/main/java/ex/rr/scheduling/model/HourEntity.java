@@ -35,7 +35,7 @@ public class HourEntity {
     @JsonSerialize(using = LocalTimeSerializer.class)
     private LocalTime sessionTime;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
     @Cascade(ALL)
     private List<UserEntity> users;
 

@@ -135,4 +135,86 @@
 > 
 > ### 1. Queries
 > 
+> ```graphql
+>   getAllUsers{ 
+>     id 
+>     username 
+>     email 
+>     role 
+>   }
+> 
+>   getUserById(userId: 1) { 
+>     id 
+>     username 
+>     email 
+>     role 
+>   }
+>   
+>   getCalendar {
+>       id
+>       sessionDate
+>       hours{
+>         id
+>         sessionTime
+>         count
+>         users{
+>           id
+>           username
+>         }
+>       }
+>   }
+>   
+>   getCalendarByUserId(userId: 1){
+>     id 
+>     sessionDate 
+>     hours{
+>       id
+>       sessionTime
+>       count
+>       users{
+>         id
+>         username
+>       }
+>     }
+>   }
+> ```
+> 
 > ### 2. Mutations
+> 
+> ```graphql
+>   addUser(
+>     userInput:{
+>       username:"test"
+>       password:"test",
+>       email:"test@test"
+>     }
+>   ){ 
+>     id 
+>     username 
+>     email 
+>     role 
+>   }
+>   
+>   updateUserEmail(userId:1 email:"test@test") {
+>     id
+>     username 
+>     password 
+>     email 
+>     role 
+>   }
+>   
+>   addSession(
+>     userId: 1
+>     calendarInput: {
+>       sessionDate:"2022-01-03", 
+>       sessionTime:"17:30"
+>     }
+>   )
+>   
+>   cancelSession(
+>     userId: 1 
+>     calendarInput: {
+>       sessionDate:"2022-01-12", 
+>       sessionTime:"17:30"}
+>   )
+> ```

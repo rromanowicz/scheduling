@@ -23,25 +23,28 @@ import static org.hibernate.annotations.CascadeType.ALL;
 @NoArgsConstructor
 @Builder
 @Entity
-public class HourEntity {
+public class Session {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hourIdSeq")
-    @SequenceGenerator(name = "hourIdSeq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sessionIdSeq")
+    @SequenceGenerator(name = "sessionIdSeq")
     private Integer id;
+
+    private Integer sessionDateId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)
     private LocalTime sessionTime;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = UserEntity.class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
     @Cascade(ALL)
-    private List<UserEntity> users;
+    private List<User> users;
 
-    private Integer count;
+    @Builder.Default
+    private Integer count = 0;
 
-    public void addUser(UserEntity user) {
+    public void addUser(User user) {
         if (users == null) {
             users = new ArrayList<>();
         }
@@ -49,7 +52,7 @@ public class HourEntity {
         count++;
     }
 
-    public void removeUser(UserEntity user) {
+    public void removeUser(User user) {
         if (users == null) {
             users = new ArrayList<>();
         }

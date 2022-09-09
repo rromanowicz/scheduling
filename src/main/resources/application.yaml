@@ -2,14 +2,18 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+server:
+  servlet:
+    contextPath: /api
+
 spring:
-  profiles:
-    active: local
+#  profiles:
+#    active: local
   datasource:
     url: jdbc:h2:mem:schedulingDb
     #    url: jdbc:h2:file:/data/schedulingDb
     username: sa
-    password: #password
+    password: password
     driverClassName: org.h2.Driver
 
   jpa:
@@ -17,6 +21,8 @@ spring:
 #    show-sql: true
 #    properties:
 #      hibernate:
+#        type: trace
+#        SQL: debug
 #        format_sql: true
 
   h2:
@@ -28,8 +34,8 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
 
-graphql:
-  servlet:
-    corsEnabled: true
-    mapping: /graphql
-    enabled: true
+ex:
+  app:
+    jwtSecret: exrSecretKey
+    jwtExpirationMs: 86400000
+    jwtCookieName: exrScheduling

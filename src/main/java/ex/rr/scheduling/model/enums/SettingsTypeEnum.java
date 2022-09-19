@@ -1,5 +1,6 @@
 package ex.rr.scheduling.model.enums;
 
+@SuppressWarnings("unused")
 public enum SettingsTypeEnum {
 
     SESSION,

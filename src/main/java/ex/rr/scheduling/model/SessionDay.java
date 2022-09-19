@@ -1,22 +1,33 @@
 package ex.rr.scheduling.model;
 
 
+import static org.hibernate.annotations.CascadeType.ALL;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import lombok.*;
-import org.hibernate.Hibernate;
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-
-import static org.hibernate.annotations.CascadeType.ALL;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.Cascade;
 
 @Getter
 @Setter
@@ -43,6 +54,7 @@ public class SessionDay {
     @OneToMany(mappedBy = "sessionDateId", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cascade(ALL)
     @ToString.Exclude
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Session> sessions;
 
     @Builder.Default

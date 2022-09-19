@@ -2,15 +2,26 @@ package ex.rr.scheduling.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.hibernate.Hibernate;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
 @Getter
 @Setter
@@ -19,6 +30,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @Entity
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SessionMonth {
 
     @Id

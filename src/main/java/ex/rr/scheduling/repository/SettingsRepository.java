@@ -6,7 +6,9 @@ import ex.rr.scheduling.model.enums.SettingsTypeEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SettingsRepository extends JpaRepository<Settings, Integer> {
     Collection<Settings> findByLocationId(Integer id);
 

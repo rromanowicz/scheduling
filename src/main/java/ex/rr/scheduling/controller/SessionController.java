@@ -45,8 +45,7 @@ public class SessionController {
 
             String username = jwtUtils.getUserNameFromJwtToken(jwt);
             Optional<Session> session = sessionRepository.findById(sessionRequest.getSessionId());
-//            Optional<User> user = userRepository.findByUsername(username);
-//
+
             Collection<Settings> maxUsers = settingsRepository.findByLocationIdAndSubType(id, SettingsSubTypeEnum.MAX_USERS);
             if (maxUsers.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Number of users not configured.");

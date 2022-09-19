@@ -54,6 +54,21 @@ public class SessionMonthController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping("/{year}/{month}")
+    public ResponseEntity<SessionMonth> getSessionMonth(@PathVariable Integer id, @PathVariable Integer year
+            , @PathVariable Integer month) {
+        Optional<SessionYear> sessionYear = sessionYearRepository.findByLocationIdAndSessionYear(id, year);
+
+        if (sessionYear.isPresent()) {
+            Optional<SessionMonth> sessionMonth = sessionYear.get().getSessionMonths().stream().filter(mth -> mth.getMonthName().equals(Month.of(month))).findFirst();
+            if (sessionMonth.isPresent()) {
+                return ResponseEntity.ok(sessionMonth.get());
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
     private SessionMonth getFilledMonth(Integer locationId, SessionMonth sessionMonth, Integer year, Integer month) {
         YearMonth ym = YearMonth.of(year, month);
         LocalDate start = ym.atDay(1);
@@ -68,7 +83,7 @@ public class SessionMonthController {
                 .filter(dh -> dh.getType().name().equals(dt.getSessionDate().getDayOfWeek().toString()))
                 .map(dh -> Session.builder().sessionDateId(dt.getId()).sessionTime(LocalTime.parse(dh.getVal())).build()).collect(Collectors.toList())));
 
-        return SessionMonth.builder().sessionYearId(sessionMonth.getSessionYearId()).id(sessionMonth.getId()).monthName(Month.of(month)).sessionDays(sessionDays).build();
+        return SessionMonth.builder().sessionYearId(sessionMonth.getSessionYearId()).id(sessionMonth.getId()).monthName(Month.of(month)).monthDate(start).sessionDays(sessionDays).build();
     }
 
 }

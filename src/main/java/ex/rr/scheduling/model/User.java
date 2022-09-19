@@ -1,5 +1,7 @@
 package ex.rr.scheduling.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import ex.rr.scheduling.model.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,6 +40,7 @@ public class User {
     @Size(max = 20)
     private String username;
 
+    @JsonIgnore
     @NotBlank
     @Size(max = 120)
     private String password;
@@ -47,10 +50,20 @@ public class User {
     @Email
     private String email;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    public boolean hasRole(RoleEnum role) {
+
+        if (role == RoleEnum.ROLE_MODERATOR) {
+            return roles.stream().anyMatch(r -> (r.getName().equals(role) || r.getName().equals(RoleEnum.ROLE_ADMIN)));
+        }
+        return roles.stream().anyMatch(r -> r.getName().equals(role));
+
+
+    }
 }

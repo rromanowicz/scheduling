@@ -21,8 +21,6 @@ spring:
 #    show-sql: true
 #    properties:
 #      hibernate:
-#        type: trace
-#        SQL: debug
 #        format_sql: true
 
   h2:
@@ -39,3 +37,11 @@ ex:
     jwtSecret: exrSecretKey
     jwtExpirationMs: 86400000
     jwtCookieName: exrScheduling
+
+
+
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type: trace

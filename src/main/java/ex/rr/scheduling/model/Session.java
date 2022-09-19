@@ -5,22 +5,21 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.hibernate.annotations.CascadeType.ALL;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Entity
 public class Session {
@@ -39,24 +38,41 @@ public class Session {
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
     @Cascade(ALL)
-    private List<User> users;
+    private Set<User> users;
 
     @Builder.Default
     private Integer count = 0;
 
     public void addUser(User user) {
         if (users == null) {
-            users = new ArrayList<>();
+            users = new HashSet<>();
         }
-        users.add(user);
-        count++;
+        if (!users.contains(user)) {
+            users.add(user);
+            count++;
+        }
     }
 
     public void removeUser(User user) {
         if (users == null) {
-            users = new ArrayList<>();
+            users = new HashSet<>();
         }
-        users.remove(user);
-        count--;
+        if (users.contains(user)) {
+            users.remove(user);
+            count--;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Session session = (Session) o;
+        return id != null && Objects.equals(id, session.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

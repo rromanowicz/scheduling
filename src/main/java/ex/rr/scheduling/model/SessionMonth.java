@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class SessionMonth {
     private Integer sessionYearId;
 
     private Month monthName;
+
+    private LocalDate monthDate;
 
     @OneToMany(mappedBy = "sessionMonthId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SessionDay> sessionDays;

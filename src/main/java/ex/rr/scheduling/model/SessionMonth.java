@@ -1,8 +1,9 @@
 package ex.rr.scheduling.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -38,22 +39,28 @@ public class SessionMonth {
     @SequenceGenerator(name = "sessionMonthIdSeq")
     private Integer id;
 
-    @JsonIgnore
     @NotNull
     private Integer sessionYearId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonView(View.ISessionMonth.class)
     private Month monthName;
 
     private LocalDate monthDate;
 
     @OneToMany(mappedBy = "sessionMonthId", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonView(View.ISessionMonth.class)
     private List<SessionDay> sessionDays;
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
         SessionMonth that = (SessionMonth) o;
         return id != null && Objects.equals(id, that.id);
     }

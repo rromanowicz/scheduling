@@ -3,8 +3,8 @@ package ex.rr.scheduling.model;
 import static org.hibernate.annotations.CascadeType.ALL;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
@@ -41,21 +41,24 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sessionIdSeq")
     @SequenceGenerator(name = "sessionIdSeq")
+    @JsonView(View.ISession.class)
     private Integer id;
 
-    @JsonIgnore
     private Integer sessionDateId;
 
+    @JsonView(View.ISession.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)
     private LocalTime sessionTime;
 
+    @JsonView(View.ISession.class)
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = User.class)
     @Cascade(ALL)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<User> users;
 
+    @JsonView(View.ISession.class)
     @Builder.Default
     private Integer count = 0;
 
@@ -81,8 +84,12 @@ public class Session {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
         Session session = (Session) o;
         return id != null && Objects.equals(id, session.id);
     }

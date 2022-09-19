@@ -4,8 +4,8 @@ package ex.rr.scheduling.model;
 import static org.hibernate.annotations.CascadeType.ALL;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -43,14 +43,15 @@ public class SessionDay {
     @SequenceGenerator(name = "sessionDateIdSeq")
     private Integer id;
 
-    @JsonIgnore
     private Integer sessionMonthId;
 
+    @JsonView(View.ISessionDay.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate sessionDate;
 
+    @JsonView(View.ISessionDay.class)
     @OneToMany(mappedBy = "sessionDateId", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cascade(ALL)
     @ToString.Exclude
@@ -62,8 +63,12 @@ public class SessionDay {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
         SessionDay that = (SessionDay) o;
         return id != null && Objects.equals(id, that.id);
     }

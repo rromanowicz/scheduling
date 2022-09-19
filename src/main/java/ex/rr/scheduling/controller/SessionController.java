@@ -10,15 +10,19 @@ import ex.rr.scheduling.repository.SessionRepository;
 import ex.rr.scheduling.repository.SettingsRepository;
 import ex.rr.scheduling.repository.UserRepository;
 import ex.rr.scheduling.security.jwt.JwtUtils;
+import java.util.Collection;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/location/{id}/session")
@@ -46,7 +50,8 @@ public class SessionController {
             String username = jwtUtils.getUserNameFromJwtToken(jwt);
             Optional<Session> session = sessionRepository.findById(sessionRequest.getSessionId());
 
-            Collection<Settings> maxUsers = settingsRepository.findByLocationIdAndSubType(id, SettingsSubTypeEnum.MAX_USERS);
+            Collection<Settings> maxUsers = settingsRepository.findByLocationIdAndSubType(id,
+                    SettingsSubTypeEnum.MAX_USERS);
             if (maxUsers.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Number of users not configured.");
             }
@@ -60,7 +65,7 @@ public class SessionController {
 
                 if (!sessionRequest.getUsername().equals(username)) {
                     Optional<User> user = userRepository.findByUsername(sessionRequest.getUsername());
-                    if(user.isPresent() && callingUser.get().hasRole(RoleEnum.ROLE_MODERATOR)) {
+                    if (user.isPresent() && callingUser.get().hasRole(RoleEnum.ROLE_MODERATOR)) {
                         session.get().addUser(user.get());
                     } else {
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -90,7 +95,7 @@ public class SessionController {
             if (session.isPresent() && callingUser.isPresent()) {
                 if (!sessionRequest.getUsername().equals(username)) {
                     Optional<User> user = userRepository.findByUsername(sessionRequest.getUsername());
-                    if(user.isPresent() && callingUser.get().hasRole(RoleEnum.ROLE_MODERATOR)) {
+                    if (user.isPresent() && callingUser.get().hasRole(RoleEnum.ROLE_MODERATOR)) {
                         session.get().removeUser(user.get());
                     } else {
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -62,10 +62,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/auth/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/location/*/month/add").hasRole("ADMIN")
                 .antMatchers("/location/*/*").hasRole("ADMIN")
+                .antMatchers("/location/*/sessionDays").hasRole("ADMIN")
                 .antMatchers("/location/add").hasRole("ADMIN")
-                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/location/*/session/**").authenticated()
                 .antMatchers(h2ConsolePath + "/**").permitAll()
                 .anyRequest().authenticated();

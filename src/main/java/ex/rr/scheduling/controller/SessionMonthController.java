@@ -11,7 +11,7 @@ import ex.rr.scheduling.model.SessionYear;
 import ex.rr.scheduling.model.Settings;
 import ex.rr.scheduling.model.enums.SettingsSubTypeEnum;
 import ex.rr.scheduling.repository.LocationRepository;
-import ex.rr.scheduling.repository.SessionDateRepository;
+import ex.rr.scheduling.repository.SessionDayRepository;
 import ex.rr.scheduling.repository.SessionMonthRepository;
 import ex.rr.scheduling.repository.SessionYearRepository;
 import ex.rr.scheduling.repository.SettingsRepository;
@@ -48,7 +48,7 @@ public class SessionMonthController {
     @Autowired
     private SessionMonthRepository sessionMonthRepository;
     @Autowired
-    private SessionDateRepository sessionDateRepository;
+    private SessionDayRepository sessionDayRepository;
     @Autowired
     private SettingsRepository settingsRepository;
 
@@ -99,7 +99,7 @@ public class SessionMonthController {
         LocalDate start = ym.atDay(1);
         LocalDate end = ym.plusMonths(1).atDay(1);
 
-        List<SessionDay> sessionDays = sessionDateRepository.saveAll(start.datesUntil(end)
+        List<SessionDay> sessionDays = sessionDayRepository.saveAll(start.datesUntil(end)
                 .map(dt -> SessionDay.builder().sessionMonthId(sessionMonth.getId()).sessionDate(dt).build())
                 .collect(Collectors.toList()));
 

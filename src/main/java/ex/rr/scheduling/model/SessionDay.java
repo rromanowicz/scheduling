@@ -58,8 +58,9 @@ public class SessionDay {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Session> sessions;
 
+    @JsonView(View.ISessionDay.class)
     @Builder.Default
-    private boolean isActive = true;
+    private boolean active = true;
 
     @Override
     public boolean equals(Object o) {

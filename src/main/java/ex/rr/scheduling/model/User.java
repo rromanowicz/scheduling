@@ -35,67 +35,74 @@ import org.hibernate.Hibernate;
 @Builder
 @Entity
 @Table(name = "users",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "username"),
-        @UniqueConstraint(columnNames = "email")
-    })
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class User {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userIdSeq")
-  @SequenceGenerator(name = "userIdSeq")
-  private Integer id;
-  @NotBlank
-  @Size(max = 20)
-  @JsonView(View.IUser.class)
-  private String username;
-  @JsonIgnore
-  @NotBlank
-  @Size(max = 120)
-  private String password;
-  @NotBlank
-  @Size(max = 50)
-  @Email
-  @JsonView(View.IAdmin.class)
-  private String email;
-  @JsonIgnore
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "user_roles",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "role_id"))
-  @ToString.Exclude
-  private Set<Role> roles;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userIdSeq")
+    @SequenceGenerator(name = "userIdSeq")
+    private Integer id;
 
-  public User(String username, String email, String password) {
-    this.username = username;
-    this.email = email;
-    this.password = password;
-  }
+    @NotBlank
+    @Size(max = 20)
+    @JsonView(View.IUser.class)
+    private String username;
 
-  public boolean hasRole(RoleEnum role) {
+    @JsonIgnore
+    @NotBlank
+    @Size(max = 120)
+    private String password;
 
-    if (role == RoleEnum.ROLE_MODERATOR) {
-      return roles.stream().anyMatch(r -> (r.getName().equals(role) || r.getName().equals(RoleEnum.ROLE_ADMIN)));
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    @JsonView(View.IAdmin.class)
+    private String email;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ToString.Exclude
+    @JsonView(View.IAdmin.class)
+    private Set<Role> roles;
+
+    private boolean enabled;
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
-    return roles.stream().anyMatch(r -> r.getName().equals(role));
+
+    public boolean hasRole(RoleEnum role) {
+
+        if (role == RoleEnum.ROLE_MODERATOR) {
+            return roles.stream().anyMatch(r -> (r.getName().equals(role) || r.getName().equals(RoleEnum.ROLE_ADMIN)));
+        }
+        return roles.stream().anyMatch(r -> r.getName().equals(role));
 
 
-  }
+    }
 
-  @Override
-  public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
-          return false;
-      }
-    User user = (User) o;
-    return id != null && Objects.equals(id, user.id);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
 
-  @Override
-  public int hashCode() {
-    return getClass().hashCode();
-  }
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

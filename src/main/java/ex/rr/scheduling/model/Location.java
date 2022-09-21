@@ -49,7 +49,7 @@ public class Location {
 
     @OneToMany(mappedBy = "locationId", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    @JsonView(View.ILocation.class)
+    @JsonView(View.ISettings.class)
     private Set<Settings> settings;
 
     @Override

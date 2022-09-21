@@ -2,11 +2,15 @@ package ex.rr.scheduling.model;
 
 public class View {
 
-    public interface IAdmin extends ILocation, ISettings {
+    public interface IAdmin extends ILocation, ISettings, IRole {
 
     }
 
     public interface ISettings {
+
+    }
+
+    public interface IRole {
 
     }
 

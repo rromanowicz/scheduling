@@ -1,5 +1,6 @@
 package ex.rr.scheduling.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import ex.rr.scheduling.model.enums.RoleEnum;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -21,6 +22,7 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
+    @JsonView(View.IRole.class)
     private RoleEnum name;
 
     public Role(RoleEnum name) {

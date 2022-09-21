@@ -39,8 +39,8 @@ import org.hibernate.annotations.Cascade;
 public class SessionDay {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sessionDateIdSeq")
-    @SequenceGenerator(name = "sessionDateIdSeq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sessionDayIdSeq")
+    @SequenceGenerator(name = "sessionDayIdSeq")
     private Integer id;
 
     private Integer sessionMonthId;
@@ -52,7 +52,7 @@ public class SessionDay {
     private LocalDate sessionDate;
 
     @JsonView(View.ISessionDay.class)
-    @OneToMany(mappedBy = "sessionDateId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "sessionDayId", cascade = CascadeType.ALL, orphanRemoval = true)
     @Cascade(ALL)
     @ToString.Exclude
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

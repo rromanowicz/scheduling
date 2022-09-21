@@ -108,7 +108,7 @@ public class SessionMonthController {
 
         sessionDays.forEach(dt -> dt.setSessions(dailyHours.stream()
                 .filter(dh -> dh.getType().name().equals(dt.getSessionDate().getDayOfWeek().toString()))
-                .map(dh -> Session.builder().sessionDateId(dt.getId()).sessionTime(LocalTime.parse(dh.getVal()))
+                .map(dh -> Session.builder().sessionDayId(dt.getId()).sessionTime(LocalTime.parse(dh.getVal()))
                         .build())
                 .collect(Collectors.toList())));
 

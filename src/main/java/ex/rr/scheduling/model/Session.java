@@ -44,7 +44,7 @@ public class Session {
     @JsonView(View.ISession.class)
     private Integer id;
 
-    private Integer sessionDateId;
+    private Integer sessionDayId;
 
     @JsonView(View.ISession.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
@@ -61,6 +61,10 @@ public class Session {
     @JsonView(View.ISession.class)
     @Builder.Default
     private Integer count = 0;
+
+    @JsonView(View.ISession.class)
+    @Builder.Default
+    private boolean active = true;
 
     public void addUser(User user) {
         if (users == null) {

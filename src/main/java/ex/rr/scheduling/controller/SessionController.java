@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -112,5 +113,26 @@ public class SessionController {
         return ResponseEntity.badRequest().build();
     }
 
+    @PatchMapping("/{sessionId}/lock")
+    public ResponseEntity<String> lockSession(@PathVariable Integer sessionId){
+        Optional<Session> session = sessionRepository.findById(sessionId);
+        if (session.isPresent()) {
+            session.get().setActive(false);
+            sessionRepository.save(session.get());
+            return ResponseEntity.ok("Session locked.");
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/{sessionId}/unlock")
+    public ResponseEntity<String> unlockSession(@PathVariable Integer sessionId){
+        Optional<Session> session = sessionRepository.findById(sessionId);
+        if (session.isPresent()) {
+            session.get().setActive(false);
+            sessionRepository.save(session.get());
+            return ResponseEntity.ok("Session locked.");
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 }

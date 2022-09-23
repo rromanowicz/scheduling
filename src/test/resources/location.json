@@ -1,0 +1,216 @@
+[
+  {
+    "id": 1,
+    "address": "Test loc 112345",
+    "sessionYears": [
+      {
+        "id": 1,
+        "locationId": 1,
+        "sessionYear": 2022,
+        "sessionMonths": [
+          {
+            "id": 2,
+            "sessionYearId": 1,
+            "monthName": "SEPTEMBER",
+            "monthDate": [
+              2022,
+              9,
+              1
+            ],
+            "sessionDays": [
+              {
+                "id": 1,
+                "sessionMonthId": 2,
+                "sessionDate": "2022-09-01",
+                "sessions": [
+                  {
+                    "id": 1,
+                    "sessionDayId": 1,
+                    "sessionTime": "16:00",
+                    "users": [
+                      {
+                        "id": 3,
+                        "username": "test3",
+                        "email": "test3@test.com",
+                        "roles": [
+                          {
+                            "id": 3,
+                            "name": "ROLE_USER"
+                          }
+                        ],
+                        "enabled": true
+                      },
+                      {
+                        "id": 3,
+                        "username": "test2",
+                        "email": "test2@test.com",
+                        "roles": [
+                          {
+                            "id": 2,
+                            "name": "ROLE_MODERATOR"
+                          },
+                          {
+                            "id": 3,
+                            "name": "ROLE_USER"
+                          }
+                        ],
+                        "enabled": true
+                      }
+                    ],
+                    "count": 1,
+                    "active": true
+                  },
+                  {
+                    "id": 2,
+                    "sessionDayId": 1,
+                    "sessionTime": "17:30",
+                    "users": [],
+                    "count": 0,
+                    "active": true
+                  },
+                  {
+                    "id": 3,
+                    "sessionDayId": 1,
+                    "sessionTime": "19:00",
+                    "users": [],
+                    "count": 0,
+                    "active": true
+                  }
+                ],
+                "active": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "id": 18,
+        "locationId": 1,
+        "type": "SATURDAY",
+        "subType": "HOUR",
+        "val": "11:30"
+      },
+      {
+        "id": 17,
+        "locationId": 1,
+        "type": "SATURDAY",
+        "subType": "HOUR",
+        "val": "10:00"
+      },
+      {
+        "id": 8,
+        "locationId": 1,
+        "type": "WEDNESDAY",
+        "subType": "HOUR",
+        "val": "16:00"
+      },
+      {
+        "id": 10,
+        "locationId": 1,
+        "type": "WEDNESDAY",
+        "subType": "HOUR",
+        "val": "19:00"
+      },
+      {
+        "id": 9,
+        "locationId": 1,
+        "type": "WEDNESDAY",
+        "subType": "HOUR",
+        "val": "17:30"
+      },
+      {
+        "id": 12,
+        "locationId": 1,
+        "type": "THURSDAY",
+        "subType": "HOUR",
+        "val": "17:30"
+      },
+      {
+        "id": 1,
+        "locationId": 1,
+        "type": "SESSION",
+        "subType": "MAX_USERS",
+        "val": "5"
+      },
+      {
+        "id": 11,
+        "locationId": 1,
+        "type": "THURSDAY",
+        "subType": "HOUR",
+        "val": "16:00"
+      },
+      {
+        "id": 13,
+        "locationId": 1,
+        "type": "THURSDAY",
+        "subType": "HOUR",
+        "val": "19:00"
+      },
+      {
+        "id": 3,
+        "locationId": 1,
+        "type": "MONDAY",
+        "subType": "HOUR",
+        "val": "17:30"
+      },
+      {
+        "id": 4,
+        "locationId": 1,
+        "type": "MONDAY",
+        "subType": "HOUR",
+        "val": "19:00"
+      },
+      {
+        "id": 6,
+        "locationId": 1,
+        "type": "TUESDAY",
+        "subType": "HOUR",
+        "val": "17:30"
+      },
+      {
+        "id": 15,
+        "locationId": 1,
+        "type": "FRIDAY",
+        "subType": "HOUR",
+        "val": "17:30"
+      },
+      {
+        "id": 2,
+        "locationId": 1,
+        "type": "MONDAY",
+        "subType": "HOUR",
+        "val": "16:00"
+      },
+      {
+        "id": 5,
+        "locationId": 1,
+        "type": "TUESDAY",
+        "subType": "HOUR",
+        "val": "16:00"
+      },
+      {
+        "id": 7,
+        "locationId": 1,
+        "type": "TUESDAY",
+        "subType": "HOUR",
+        "val": "19:00"
+      },
+      {
+        "id": 16,
+        "locationId": 1,
+        "type": "FRIDAY",
+        "subType": "HOUR",
+        "val": "19:00"
+      },
+      {
+        "id": 14,
+        "locationId": 1,
+        "type": "FRIDAY",
+        "subType": "HOUR",
+        "val": "16:00"
+      }
+    ]
+  }
+]

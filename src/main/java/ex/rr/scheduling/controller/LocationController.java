@@ -8,7 +8,6 @@ import ex.rr.scheduling.model.Location;
 import ex.rr.scheduling.model.Settings;
 import ex.rr.scheduling.repository.LocationRepository;
 import ex.rr.scheduling.repository.SettingsRepository;
-import ex.rr.scheduling.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,9 +33,6 @@ public class LocationController {
 
     @Autowired
     private SettingsRepository settingsRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
 
     @GetMapping("")

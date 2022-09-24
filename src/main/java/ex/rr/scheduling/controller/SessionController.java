@@ -10,7 +10,6 @@ import ex.rr.scheduling.payload.request.SessionUserRequest;
 import ex.rr.scheduling.repository.SessionRepository;
 import ex.rr.scheduling.repository.SettingsRepository;
 import ex.rr.scheduling.repository.UserRepository;
-import ex.rr.scheduling.security.jwt.JwtUtils;
 import java.util.Collection;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -40,9 +39,6 @@ public class SessionController {
 
     @Autowired
     private SettingsRepository settingsRepository;
-
-    @Autowired
-    private JwtUtils jwtUtils;
 
     @PostMapping("/addUser")
     public ResponseEntity<String> addSession(HttpServletRequest request

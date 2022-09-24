@@ -10,7 +10,6 @@ import ex.rr.scheduling.model.SessionMonth;
 import ex.rr.scheduling.model.SessionYear;
 import ex.rr.scheduling.model.Settings;
 import ex.rr.scheduling.model.enums.SettingsSubTypeEnum;
-import ex.rr.scheduling.repository.LocationRepository;
 import ex.rr.scheduling.repository.SessionDayRepository;
 import ex.rr.scheduling.repository.SessionMonthRepository;
 import ex.rr.scheduling.repository.SessionYearRepository;
@@ -41,8 +40,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/location/{id}/month")
 public class SessionMonthController {
 
-    @Autowired
-    private LocationRepository locationRepository;
     @Autowired
     private SessionYearRepository sessionYearRepository;
     @Autowired

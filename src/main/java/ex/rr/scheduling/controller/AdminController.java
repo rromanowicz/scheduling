@@ -4,7 +4,6 @@ import ex.rr.scheduling.model.Session;
 import ex.rr.scheduling.model.SessionDay;
 import ex.rr.scheduling.model.User;
 import ex.rr.scheduling.repository.SessionDayRepository;
-import ex.rr.scheduling.repository.SessionRepository;
 import ex.rr.scheduling.repository.UserRepository;
 import java.time.LocalTime;
 import java.util.Optional;
@@ -27,9 +26,6 @@ public class AdminController {
     @Autowired
     private SessionDayRepository sessionDayRepository;
 
-    @Autowired
-    private SessionRepository sessionRepository;
-
 
     @PatchMapping("/user/{id}/enabled")
     public ResponseEntity<String> lockUser(@PathVariable Integer id, @RequestParam boolean enabled) {
@@ -45,7 +41,7 @@ public class AdminController {
     @PostMapping("/session/{sessionDayId}/addSession")
     public ResponseEntity<String> addSession(@PathVariable Integer sessionDayId, @RequestParam String sessionTime) {
         Optional<SessionDay> sessionDay = sessionDayRepository.findById(sessionDayId);
-        if(sessionDay.isPresent()) {
+        if (sessionDay.isPresent()) {
             sessionDay.get().getSessions().add(
                     Session.builder().sessionDayId(sessionDayId).sessionTime(LocalTime.parse(sessionTime)).build());
             sessionDayRepository.save(sessionDay.get());

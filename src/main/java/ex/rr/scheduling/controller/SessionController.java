@@ -66,6 +66,7 @@ public class SessionController {
                 if (!hasModeratorRole()) {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
                 }
+                session.get().addUser(user.get());
             } else {
                 session.get().addUser(user.get());
             }
@@ -92,6 +93,7 @@ public class SessionController {
                 if (!hasModeratorRole()) {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
                 }
+                session.get().removeUser(user.get());
             } else {
                 session.get().removeUser(user.get());
             }

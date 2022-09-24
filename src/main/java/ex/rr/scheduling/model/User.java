@@ -2,7 +2,6 @@ package ex.rr.scheduling.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import ex.rr.scheduling.model.enums.RoleEnum;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;

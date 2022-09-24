@@ -1,9 +1,12 @@
 package ex.rr.scheduling.controller;
 
 import ex.rr.scheduling.model.Location;
+import ex.rr.scheduling.model.SessionDay;
 import ex.rr.scheduling.payload.request.DateRange;
 import ex.rr.scheduling.repository.LocationRepository;
 import ex.rr.scheduling.repository.SessionDayRepository;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +31,7 @@ public class SessionDayController {
     public ResponseEntity<DateRange> unlockSessionDay(@PathVariable Integer id, @RequestBody DateRange dates) {
         Optional<Location> location = locationRepository.findById(id);
         if (location.isPresent()) {
+            List<SessionDay> sessionDays = new ArrayList<>();
             location.get().getSessionYears().stream()
                     .filter(sessionYear -> dates.getYears().contains(sessionYear.getSessionYear()))
                     .forEach(sessionYear -> sessionYear.getSessionMonths()
@@ -38,9 +42,10 @@ public class SessionDayController {
                                     .forEach(sessionDay -> {
                                         sessionDay.setActive(true);
                                         sessionDay.getSessions().forEach(session -> session.setActive(true));
+                                        sessionDays.add(sessionDay);
                                     })
                             ));
-            locationRepository.save(location.get());
+            sessionDayRepository.saveAll(sessionDays);
             return ResponseEntity.ok(dates);
         }
 
@@ -51,6 +56,7 @@ public class SessionDayController {
     public ResponseEntity<DateRange> lockSessionDay(@PathVariable Integer id, @RequestBody DateRange dates) {
         Optional<Location> location = locationRepository.findById(id);
         if (location.isPresent()) {
+            List<SessionDay> sessionDays = new ArrayList<>();
             location.get().getSessionYears().stream()
                     .filter(sessionYear -> dates.getYears().contains(sessionYear.getSessionYear()))
                     .forEach(sessionYear -> sessionYear.getSessionMonths()
@@ -60,9 +66,10 @@ public class SessionDayController {
                                     .forEach(sessionDay -> {
                                         sessionDay.setActive(false);
                                         sessionDay.getSessions().forEach(session -> session.setActive(false));
+                                        sessionDays.add(sessionDay);
                                     })
                             ));
-            locationRepository.save(location.get());
+            sessionDayRepository.saveAll(sessionDays);
             return ResponseEntity.ok(dates);
         }
 

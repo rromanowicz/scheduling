@@ -222,7 +222,7 @@ public class SessionControllerTest {
 
     @Test
     @WithMockUser(username = "test", roles = {"USER", "MODERATOR"})
-    public void shouldReturnForbiddenWhenLockSessionWhileIsAdmin() throws Exception {
+    public void shouldReturnForbiddenWhenLockSessionWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(patch("/location/1/session/1/lock")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isForbidden())
@@ -244,7 +244,7 @@ public class SessionControllerTest {
 
     @Test
     @WithMockUser(username = "test", roles = {"USER", "MODERATOR"})
-    public void shouldReturnForbiddenWhenUnlockSessionWhileIsAdmin() throws Exception {
+    public void shouldReturnForbiddenWhenUnlockSessionWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(patch("/location/1/session/1/unlock")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isForbidden())

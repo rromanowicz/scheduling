@@ -64,7 +64,7 @@ public class AdminControllerTest {
 
     @Test
     @WithMockUser(roles = {"MODERATOR", "USER"})
-    public void shouldReturnForbiddenWhenLockUserWhileNotAdmin() throws Exception {
+    public void shouldReturnForbiddenWhenLockUserWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(patch("/admin/user/1/enabled?enabled=false")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isForbidden())
@@ -89,7 +89,7 @@ public class AdminControllerTest {
 
     @Test
     @WithMockUser(roles = {"MODERATOR", "USER"})
-    public void shouldReturnForbiddenWhenAddSessionWhileNotAdmin() throws Exception {
+    public void shouldReturnForbiddenWhenAddSessionWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(post("/admin/session/1/addSession?sessionTime=14:00")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isForbidden())

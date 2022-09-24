@@ -91,7 +91,7 @@ public class LocationControllerTest {
 
     @Test
     @WithMockUser(roles = {"MODERATOR", "USER"})
-    public void shouldReturnForbiddenWhenAddLocationWithoutAdmin() throws Exception {
+    public void shouldReturnForbiddenWhenAddLocationWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(get("/location/add")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content("Test Location")
@@ -104,7 +104,7 @@ public class LocationControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    public void shouldReturnOkWhenAddLocationWithAdmin() throws Exception {
+    public void shouldReturnOkWhenAddLocationWhileIsAdmin() throws Exception {
         this.mockMvc.perform(post("/location/add")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content("Test Location")
@@ -118,7 +118,7 @@ public class LocationControllerTest {
 
     @Test
     @WithMockUser(roles = {"MODERATOR", "USER"})
-    public void shouldReturnForbiddenWhenAddSettingsWithoutAdmin() throws Exception {
+    public void shouldReturnForbiddenWhenAddSettingsWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(get("/location/1/addSettings")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("[\n"
@@ -138,7 +138,7 @@ public class LocationControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    public void shouldReturnOkWhenAddSettingsWithAdmin() throws Exception {
+    public void shouldReturnOkWhenAddSettingsWhileIsAdmin() throws Exception {
         this.mockMvc.perform(post("/location/1/addSettings")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("[\n"

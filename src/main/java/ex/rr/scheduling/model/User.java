@@ -62,13 +62,12 @@ public class User {
     @JsonView(View.IAdmin.class)
     private String email;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ToString.Exclude
-    @JsonView(View.IAdmin.class)
+    @JsonView(View.IRole.class)
     private Set<Role> roles;
 
     private boolean enabled;
@@ -77,16 +76,6 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public boolean hasRole(RoleEnum role) {
-
-        if (role == RoleEnum.ROLE_MODERATOR) {
-            return roles.stream().anyMatch(r -> (r.getName().equals(role) || r.getName().equals(RoleEnum.ROLE_ADMIN)));
-        }
-        return roles.stream().anyMatch(r -> r.getName().equals(role));
-
-
     }
 
     @Override

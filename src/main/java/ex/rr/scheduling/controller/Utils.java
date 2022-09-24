@@ -25,33 +25,33 @@ public class Utils {
                 );
     }
 
+    static boolean hasAdminRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals(RoleEnum.ROLE_ADMIN.name()));
+    }
+
     static String parseResponse(Object input) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
-        if (hasModeratorRole()) {
+        if (hasAdminRole()) {
             return objectMapper.writerWithView(View.IAdmin.class).writeValueAsString(input);
+        }
+        if (hasModeratorRole()) {
+            return objectMapper.writerWithView(View.IModerator.class).writeValueAsString(input);
         } else {
             return objectMapper.writerWithView(View.ILocation.class).writeValueAsString(input);
         }
     }
 
     static List<Location> cleanOutput(List<Location> locations) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean hasModeratorRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals(RoleEnum.ROLE_MODERATOR.name()) ||
-                        r.getAuthority().equals(RoleEnum.ROLE_ADMIN.name())
-                );
 
-        if (!hasModeratorRole) {
+        if (!hasModeratorRole()) {
             locations.forEach(location ->
                     location.getSessionYears().forEach(sessionYear ->
-                            sessionYear.getSessionMonths().forEach(sessionMonth ->
-                                    sessionMonth.getSessionDays().forEach(sessionDay ->
-                                            sessionDay.getSessions().forEach(session ->
-                                                    session.getUsers().removeIf(user ->
-                                                            !authentication.getName().equals(user.getUsername()))
-                                            )))));
+                            sessionYear.getSessionMonths().forEach(Utils::cleanUserList
+                            )));
         }
 
         locations.forEach(location ->
@@ -65,12 +65,8 @@ public class Utils {
 
     static SessionMonth cleanUserList(SessionMonth sessionMonth) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean hasModeratorRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals(RoleEnum.ROLE_MODERATOR.name()) ||
-                        r.getAuthority().equals(RoleEnum.ROLE_ADMIN.name())
-                );
 
-        if (!hasModeratorRole) {
+        if (!hasModeratorRole()) {
             sessionMonth.getSessionDays().forEach(sessionDay ->
                     sessionDay.getSessions().forEach(session ->
                             session.getUsers().removeIf(user ->

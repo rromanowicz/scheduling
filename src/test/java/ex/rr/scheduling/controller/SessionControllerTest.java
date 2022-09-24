@@ -71,8 +71,14 @@ public class SessionControllerTest {
                 objectMapper.readValue(new File(
                                 Objects.requireNonNull(getClass().getClassLoader().getResource("session.json")).getFile()),
                         Session.class);
+        Session lockedSession =
+                objectMapper.readValue(new File(
+                                Objects.requireNonNull(getClass().getClassLoader().getResource("lockedSession.json"))
+                                        .getFile()),
+                        Session.class);
 
         when(sessionRepository.findById(1)).thenReturn(Optional.ofNullable(session));
+        when(sessionRepository.findById(2)).thenReturn(Optional.ofNullable(lockedSession));
         when(settingsRepository.findByLocationIdAndSubType(1, SettingsSubTypeEnum.MAX_USERS)).thenReturn(
                 List.of(Settings.builder().type(SettingsTypeEnum.SESSION).subType(SettingsSubTypeEnum.MAX_USERS).val(
                         "3").build())
@@ -246,6 +252,22 @@ public class SessionControllerTest {
     @WithMockUser(username = "test", roles = {"USER", "MODERATOR"})
     public void shouldReturnForbiddenWhenUnlockSessionWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(patch("/location/1/session/1/unlock")
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        verify(sessionRepository, never()).save(any(Session.class));
+    }
+
+    @Test
+    @WithMockUser(username = "test1")
+    public void shouldNotAddUserToLockedSession() throws Exception {
+        this.mockMvc.perform(post("/location/1/session/addUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\n"
+                                + "\t\"sessionId\": 2,\n"
+                                + "\t\"username\": \"test1\"\n"
+                                + "}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isForbidden())
                 .andReturn();

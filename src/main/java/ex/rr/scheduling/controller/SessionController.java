@@ -54,11 +54,15 @@ public class SessionController {
         if (maxUsers.isEmpty()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Number of users not configured.");
         }
+        Optional<Settings> maxUsersVal = maxUsers.stream().findFirst();
 
         Optional<User> user = userRepository.findByUsername(sessionRequest.getUsername());
 
         if (session.isPresent() && user.isPresent()) {
-            if (session.get().getCount() >= Integer.parseInt(maxUsers.stream().findFirst().get().getVal())) {
+            if (!session.get().isActive()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Session is locked.");
+            }
+            if (session.get().getCount() >= Integer.parseInt(maxUsersVal.get().getVal())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Max users reached for this session.");
             }
 

@@ -67,7 +67,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/location/*/*").hasRole("ADMIN")
                 .antMatchers("/location/*/sessionDays/**").hasRole("ADMIN")
                 .antMatchers("/location/add").hasRole("ADMIN")
-                .antMatchers("/location/*/session/**").authenticated()
+                .antMatchers("/location/*/session/*").authenticated()
+                .antMatchers("/location/*/session/*/lock").hasRole("ADMIN")
+                .antMatchers("/location/*/session/*/unlock").hasRole("ADMIN")
                 .antMatchers(h2ConsolePath + "/**").permitAll()
                 .anyRequest().authenticated();
 

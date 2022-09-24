@@ -1,9 +1,10 @@
 package ex.rr.scheduling.controller;
 
+import static ex.rr.scheduling.controller.Utils.hasModeratorRole;
+
 import ex.rr.scheduling.model.Session;
 import ex.rr.scheduling.model.Settings;
 import ex.rr.scheduling.model.User;
-import ex.rr.scheduling.model.enums.RoleEnum;
 import ex.rr.scheduling.model.enums.SettingsSubTypeEnum;
 import ex.rr.scheduling.payload.request.SessionUserRequest;
 import ex.rr.scheduling.repository.SessionRepository;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -45,76 +48,67 @@ public class SessionController {
     public ResponseEntity<String> addSession(HttpServletRequest request
             , @PathVariable Integer id
             , @RequestBody @Validated SessionUserRequest sessionRequest) {
-        String jwt = jwtUtils.getJwtFromCookies(request);
-        if (jwtUtils.validateJwtToken(jwt)) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            String username = jwtUtils.getUserNameFromJwtToken(jwt);
-            Optional<Session> session = sessionRepository.findById(sessionRequest.getSessionId());
+        String username = authentication.getName();
+        Optional<Session> session = sessionRepository.findById(sessionRequest.getSessionId());
 
-            Collection<Settings> maxUsers = settingsRepository.findByLocationIdAndSubType(id,
-                    SettingsSubTypeEnum.MAX_USERS);
-            if (maxUsers.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Number of users not configured.");
-            }
-
-            Optional<User> callingUser = userRepository.findByUsername(username);
-
-            if (session.isPresent() && callingUser.isPresent()) {
-                if (session.get().getCount() >= Integer.parseInt(maxUsers.stream().findFirst().get().getVal())) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Max users reached for this session.");
-                }
-
-                if (!sessionRequest.getUsername().equals(username)) {
-                    Optional<User> user = userRepository.findByUsername(sessionRequest.getUsername());
-                    if (user.isPresent() && callingUser.get().hasRole(RoleEnum.ROLE_MODERATOR)) {
-                        session.get().addUser(user.get());
-                    } else {
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-                    }
-                } else {
-                    session.get().addUser(callingUser.get());
-                }
-                sessionRepository.save(session.get());
-                return ResponseEntity.ok().build();
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-
+        Collection<Settings> maxUsers = settingsRepository.findByLocationIdAndSubType(id,
+                SettingsSubTypeEnum.MAX_USERS);
+        if (maxUsers.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Number of users not configured.");
         }
-        return ResponseEntity.badRequest().build();
+
+        Optional<User> user = userRepository.findByUsername(sessionRequest.getUsername());
+
+        if (session.isPresent() && user.isPresent()) {
+            if (session.get().getCount() >= Integer.parseInt(maxUsers.stream().findFirst().get().getVal())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Max users reached for this session.");
+            }
+
+            if (!sessionRequest.getUsername().equals(username)) {
+                if (!hasModeratorRole()) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
+            } else {
+                session.get().addUser(user.get());
+            }
+            sessionRepository.save(session.get());
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @DeleteMapping("/deleteUser")
     public ResponseEntity<String> removeSession(HttpServletRequest request
             , @RequestBody @Validated SessionUserRequest sessionRequest) {
-        String jwt = jwtUtils.getJwtFromCookies(request);
-        if (jwtUtils.validateJwtToken(jwt)) {
-            String username = jwtUtils.getUserNameFromJwtToken(jwt);
-            Optional<Session> session = sessionRepository.findById(sessionRequest.getSessionId());
-            Optional<User> callingUser = userRepository.findByUsername(username);
 
-            if (session.isPresent() && callingUser.isPresent()) {
-                if (!sessionRequest.getUsername().equals(username)) {
-                    Optional<User> user = userRepository.findByUsername(sessionRequest.getUsername());
-                    if (user.isPresent() && callingUser.get().hasRole(RoleEnum.ROLE_MODERATOR)) {
-                        session.get().removeUser(user.get());
-                    } else {
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-                    }
-                } else {
-                    session.get().removeUser(callingUser.get());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String username = authentication.getName();
+        Optional<Session> session = sessionRepository.findById(sessionRequest.getSessionId());
+        Optional<User> user = userRepository.findByUsername(sessionRequest.getUsername());
+
+        if (session.isPresent() && user.isPresent()) {
+            if (!sessionRequest.getUsername().equals(username)) {
+                if (!hasModeratorRole()) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
                 }
-                sessionRepository.save(session.get());
-                return ResponseEntity.ok().build();
             } else {
-                return ResponseEntity.notFound().build();
+                session.get().removeUser(user.get());
             }
+            sessionRepository.save(session.get());
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.badRequest().build();
+
     }
 
     @PatchMapping("/{sessionId}/lock")
-    public ResponseEntity<String> lockSession(@PathVariable Integer sessionId){
+    public ResponseEntity<String> lockSession(@PathVariable Integer sessionId) {
         Optional<Session> session = sessionRepository.findById(sessionId);
         if (session.isPresent()) {
             session.get().setActive(false);
@@ -125,7 +119,7 @@ public class SessionController {
     }
 
     @PatchMapping("/{sessionId}/unlock")
-    public ResponseEntity<String> unlockSession(@PathVariable Integer sessionId){
+    public ResponseEntity<String> unlockSession(@PathVariable Integer sessionId) {
         Optional<Session> session = sessionRepository.findById(sessionId);
         if (session.isPresent()) {
             session.get().setActive(false);

@@ -1,0 +1,37 @@
+{
+  "id": 1,
+  "sessionDayId": 1,
+  "sessionTime": "16:00",
+  "users": [
+    {
+      "id": 3,
+      "username": "test1",
+      "email": "test1@test.com",
+      "roles": [
+        {
+          "id": 3,
+          "name": "ROLE_USER"
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "id": 3,
+      "username": "test2",
+      "email": "test2@test.com",
+      "roles": [
+        {
+          "id": 2,
+          "name": "ROLE_MODERATOR"
+        },
+        {
+          "id": 3,
+          "name": "ROLE_USER"
+        }
+      ],
+      "enabled": true
+    }
+  ],
+  "count": 1,
+  "active": true
+}

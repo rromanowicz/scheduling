@@ -1,0 +1,80 @@
+{
+  "id": 1,
+  "locationId": 1,
+  "sessionYear": 2022,
+  "sessionMonths": [
+    {
+      "id": 2,
+      "sessionYearId": 1,
+      "monthName": "SEPTEMBER",
+      "monthDate": [
+        2022,
+        9,
+        1
+      ],
+      "sessionDays": [
+        {
+          "id": 1,
+          "sessionMonthId": 2,
+          "sessionDate": "2022-09-01",
+          "sessions": [
+            {
+              "id": 1,
+              "sessionDayId": 1,
+              "sessionTime": "16:00",
+              "users": [
+                {
+                  "id": 3,
+                  "username": "test3",
+                  "email": "test3@test.com",
+                  "roles": [
+                    {
+                      "id": 3,
+                      "name": "ROLE_USER"
+                    }
+                  ],
+                  "enabled": true
+                },
+                {
+                  "id": 3,
+                  "username": "test2",
+                  "email": "test2@test.com",
+                  "roles": [
+                    {
+                      "id": 2,
+                      "name": "ROLE_MODERATOR"
+                    },
+                    {
+                      "id": 3,
+                      "name": "ROLE_USER"
+                    }
+                  ],
+                  "enabled": true
+                }
+              ],
+              "count": 1,
+              "active": true
+            },
+            {
+              "id": 2,
+              "sessionDayId": 1,
+              "sessionTime": "17:30",
+              "users": [],
+              "count": 0,
+              "active": true
+            },
+            {
+              "id": 3,
+              "sessionDayId": 1,
+              "sessionTime": "19:00",
+              "users": [],
+              "count": 0,
+              "active": true
+            }
+          ],
+          "active": true
+        }
+      ]
+    }
+  ]
+}

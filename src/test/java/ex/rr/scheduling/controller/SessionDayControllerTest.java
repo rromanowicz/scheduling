@@ -67,7 +67,7 @@ public class SessionDayControllerTest {
 
     @Test
     @WithMockUser(username = "test", roles = {"ADMIN"})
-    public void shouldReturnOkWhenLockSessionWhileIsAdmin() throws Exception {
+    public void shouldReturnOkWhenLockSessionDayWhileIsAdmin() throws Exception {
         this.mockMvc.perform(patch("/location/1/sessionDays/lock")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n"
@@ -83,7 +83,7 @@ public class SessionDayControllerTest {
 
     @Test
     @WithMockUser(username = "test", roles = {"USER", "MODERATOR"})
-    public void shouldReturnForbiddenWhenLockSessionWhileIsNotAdmin() throws Exception {
+    public void shouldReturnForbiddenWhenLockSessionDayWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(patch("/location/1/sessionDays/lock")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n"
@@ -99,7 +99,7 @@ public class SessionDayControllerTest {
 
     @Test
     @WithMockUser(username = "test", roles = {"ADMIN"})
-    public void shouldReturnOkWhenUnlockSessionWhileIsAdmin() throws Exception {
+    public void shouldReturnOkWhenUnlockSessionDayWhileIsAdmin() throws Exception {
         this.mockMvc.perform(patch("/location/1/sessionDays/unlock")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n"
@@ -115,7 +115,7 @@ public class SessionDayControllerTest {
 
     @Test
     @WithMockUser(username = "test", roles = {"USER", "MODERATOR"})
-    public void shouldReturnForbiddenWhenUnlockSessionWhileIsNotAdmin() throws Exception {
+    public void shouldReturnForbiddenWhenUnlockSessionDayWhileIsNotAdmin() throws Exception {
         this.mockMvc.perform(patch("/location/1/sessionDays/unlock")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\n"

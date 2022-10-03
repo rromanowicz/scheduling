@@ -28,6 +28,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Formula;
 
 @Getter
 @Setter
@@ -59,8 +60,8 @@ public class Session {
     private Set<User> users;
 
     @JsonView(View.ISession.class)
-    @Builder.Default
-    private Integer count = 0;
+    @Formula("SELECT COUNT(1) FROM SESSION_USERS SU WHERE SU.SESSION_ID=id")
+    private Integer count;
 
     @JsonView(View.ISession.class)
     @Builder.Default
@@ -70,20 +71,14 @@ public class Session {
         if (users == null) {
             users = new HashSet<>();
         }
-        if (!users.contains(user)) {
-            users.add(user);
-            count++;
-        }
+        users.add(user);
     }
 
     public void removeUser(User user) {
         if (users == null) {
             users = new HashSet<>();
         }
-        if (users.contains(user)) {
-            users.remove(user);
-            count--;
-        }
+        users.remove(user);
     }
 
     @Override

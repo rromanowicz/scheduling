@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Where;
 
 @Getter
 @Setter
@@ -32,6 +33,7 @@ import org.hibernate.Hibernate;
 @Builder
 @Entity
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Where(clause = "month_date >= DATEADD('DD',-DAY(DATEADD('M',1,CURRENT_DATE()))+1,CURRENT_DATE())")
 public class SessionMonth {
 
     @Id

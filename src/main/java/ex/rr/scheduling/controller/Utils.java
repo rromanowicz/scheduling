@@ -8,7 +8,6 @@ import ex.rr.scheduling.model.Location;
 import ex.rr.scheduling.model.SessionMonth;
 import ex.rr.scheduling.model.View;
 import ex.rr.scheduling.model.enums.RoleEnum;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -53,12 +52,6 @@ public class Utils {
                             sessionYear.getSessionMonths().forEach(Utils::cleanUserList
                             )));
         }
-
-        locations.forEach(location ->
-                location.getSessionYears().forEach(sessionYear ->
-                        sessionYear.getSessionMonths().removeIf(sessionMonth ->
-                                sessionMonth.getMonthDate().isBefore(LocalDate.now().withDayOfMonth(1))
-                        )));
 
         return locations;
     }

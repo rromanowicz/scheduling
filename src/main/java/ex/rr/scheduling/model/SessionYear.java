@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Where;
 
 @Getter
 @Setter
@@ -27,6 +28,7 @@ import org.hibernate.Hibernate;
 @AllArgsConstructor
 @Builder
 @Entity
+@Where(clause = "session_year >= YEAR(NOW())")
 public class SessionYear {
 
     @Id
